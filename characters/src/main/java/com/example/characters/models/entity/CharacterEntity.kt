@@ -1,13 +1,19 @@
 package com.example.characters.models.entity
 
+import androidx.room.Entity
 import com.example.characters.models.data.Character
+import com.example.characters.models.entity.CharacterThumbnailEntity
 
-
+@Entity
 data class CharacterEntity(
-        val id: Int?,
-        val name: String?,
-        val description: String?,
-        val imageURI: String?,
-    ) {
-        fun toCharacter() = Character(id, name, description, imageURI)
+    val id: Int,
+    val name: String?,
+    val description: String?,
+    val modified: String?,
+    val resourceURI: String?,
+    val thumbnail: CharacterThumbnailEntity?
+) {
+
+    fun toCharacter() =
+        Character(id, name, description, modified, resourceURI, thumbnail?.toCharacterThumbnail())
 }

@@ -5,9 +5,12 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.http.GET
 
-class CharacterService(retrofit: Retrofit) {
-    interface MarvelService {
-        @GET("characters?ts=1&apikey=bb002cae0025452e0e19ba71896a9b11&hash=75772836ecf8d7ad6adabe834692d8fb")
-        fun getCharacters(): Call<List<Character>>
-    }
+class CharacterService(retrofit: Retrofit) : CharacterApi {
+
+    private val characterApi by lazy { retrofit.create(CharacterApi::class.java) }
+
+    override suspend fun getCharacters(limit: Int?, offset: Int?) =
+        characterApi.getCharacters(limit, offset)
+
+    override suspend fun getCharacter(id: String?) = characterApi.getCharacter(id)
 }

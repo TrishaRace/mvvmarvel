@@ -1,4 +1,3 @@
-rootProject.name = "MVVMarvel"
 include ':app'
-include ':characters'
 include ':core'
+include ':characters'
