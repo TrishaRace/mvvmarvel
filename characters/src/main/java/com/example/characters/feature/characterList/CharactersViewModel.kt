@@ -46,8 +46,11 @@ class CharactersViewModel(
                 .catch { a->
                     showError(a.message) }
                 .collect { result ->
-                    result.onSuccess { _characters.value = it }
-                    result.onFailure { showError("Error en la llamada") }
+                   result
+                    result.onSuccess {
+                        _characters.value = it.results }
+                    result.onFailure {
+                        showError("Error en la llamada") }
                 }
         }
     }

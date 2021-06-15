@@ -1,21 +1,17 @@
 package com.example.utilities.usecase
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlin.coroutines.CoroutineContext
 
-abstract class FlowUseCase<T, R>(protected open val coroutineContext: CoroutineContext = Dispatchers.IO) {
+abstract class FlowUseCase<in Params, out Type> where Type : Any? {
 
-    protected abstract fun prepareFlow(input: T?): Flow<R>
+    abstract suspend fun prepareFlow(params: Params? = null): Flow<Type>
 
     @JvmOverloads
-    operator fun invoke(
-        params: T? = null
-    ): Flow<R> {
-        return prepareFlow(params).flowOn(coroutineContext)
+    suspend operator fun invoke(
+        params: Params? = null
+    ): Flow<Type> {
+        return prepareFlow(params)
     }
 
     class None
-
 }

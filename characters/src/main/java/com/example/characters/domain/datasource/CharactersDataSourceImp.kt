@@ -21,13 +21,14 @@ class CharactersDataSourceImp(
     ) = flow {
         if (networkHandler.isConnected == true) {
             service.getCharacters(10, offset).run {
+                Log.i("","run")
                 if (this.isSuccessful && this.body() != null) {
-                    val data = this.body()!!.data.results!!
-                    emit(Either.Success(data.map { it.toCharacter().toCharacterView() }))
+                    val data = this.body()!!.data
+                    emit(Either.Success( data.toCharacters().toCharactersView()))
                 } else {
                     emit(Either.Failure(this.message()))
                 }
-            }
+            }.runCatching {  emit(Either.Failure("Error inesperado"))}
         } else {
             emit(Either.Failure("No hay conexion"))
         }
