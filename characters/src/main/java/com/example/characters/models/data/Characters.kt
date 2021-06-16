@@ -11,6 +11,14 @@ data class Characters(
     val results: MutableList<Character>?,
 ) {
 
+    constructor(results: MutableList<Character>?) : this(
+        null,
+        null,
+        null,
+        null,
+        results
+    )
+
     fun toCharactersEntity() =
         CharactersEntity(
             null,
@@ -22,11 +30,5 @@ data class Characters(
         )
 
     fun toCharactersView() =
-        CharactersView(
-            offset?:0,
-            limit?:0,
-            total?:0,
-            count?:0,
-            results?.map { it.toCharacterView() }?.toMutableList()?: mutableListOf()
-        )
+        CharactersView(results?.map { it.toCharacterView() }?.toMutableList() ?: mutableListOf())
 }

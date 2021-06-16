@@ -1,4 +1,4 @@
-package com.example.characters.feature.characterList
+package com.example.mvvmarvel.feature.character.characterList
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -25,21 +25,14 @@ class CharactersViewModel(
     private var _characters = MutableLiveData<List<CharacterView>>()
     val characters get() = _characters
 
-
     private val offset = 0
     fun getCharacters(fromPagination: Boolean = false) {
         getForecastsJob.cancelIfActive()
         getForecastsJob = viewModelScope.launch {
-            getCharactersUseCase(GetCharactersUseCase.Input(calculateOffset(), fromPagination))
-                .onStart {
-                    handleShowSpinner(true)
-                }
-                .onCompletion {
-                    handleShowSpinner(false)
-                }
-                .catch {
-                    handleFailure(Failure.Throwable(it))
-                }
+            getCharactersUseCase()
+                .onStart { handleShowSpinner(true) }
+                .onCompletion { handleShowSpinner(false) }
+                .catch { handleFailure(Failure.Throwable(it)) }
                 .collect { result ->
                     when (result) {
                         is Success<CharactersView> -> {
@@ -53,12 +46,9 @@ class CharactersViewModel(
         }
     }
 
-
-        private fun calculateOffset() = offset + 10
-
-        fun Job?.cancelIfActive() {
-            if (this?.isActive == true) {
-                cancel()
-            }
+    fun Job?.cancelIfActive() {
+        if (this?.isActive == true) {
+            cancel()
         }
-    }
+    } //meter extension en el core
+}

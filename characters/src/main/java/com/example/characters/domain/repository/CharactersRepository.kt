@@ -7,5 +7,5 @@ import com.example.utilities.either.Either
 import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {
-    fun getCharacters(offset: Int?, pagination: Boolean): Flow<State<CharactersView>>
+    fun getCharacters(): Flow<State<CharactersView>>
 }

@@ -1,7 +1,7 @@
-package com.example.characters.domain.datasource
+package com.example.characters.data.datasource
 
 import com.example.characters.models.view.CharactersView
-import com.example.characters.service.CharacterService
+import com.example.characters.data.service.CharacterService
 import com.example.exception.Failure
 import com.example.platform.NetworkHandler
 import com.example.utilities.State
@@ -17,15 +17,12 @@ class CharactersDataSourceImp(
     private val service: CharacterService
 ) : CharactersDataSource {
     override fun getCharacters(
-        offset: Int?,
-        fromPagination: Boolean
     ) = flow {
         emit(getCharactersFromService())
     }
         .catch {
             emit(Error(Failure.Throwable(it)))
         }
-        .flowOn(Dispatchers.IO)
 
     private suspend fun getCharactersFromService(): State<CharactersView> {
         return if (networkHandler.isConnected == true) {

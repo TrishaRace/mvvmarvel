@@ -1,4 +1,4 @@
-package com.example.characters.feature.characterDetail
+package com.example.mvvmarvel.feature.character.characterDetail
 
 import android.os.Bundle
 import android.view.LayoutInflater

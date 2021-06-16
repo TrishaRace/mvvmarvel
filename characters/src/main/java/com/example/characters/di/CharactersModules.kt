@@ -1,15 +1,12 @@
 package com.example.characters.di
 
-import com.example.characters.domain.datasource.CharactersDataSource
-import com.example.characters.domain.datasource.CharactersDataSourceImp
+import com.example.characters.data.datasource.CharactersDataSource
+import com.example.characters.data.datasource.CharactersDataSourceImp
+import com.example.characters.data.repository.CharactersRepositoryImp
+import com.example.characters.data.service.CharacterService
 import com.example.characters.domain.repository.CharactersRepository
-import com.example.characters.domain.repository.CharactersRepositoryImp
 import com.example.characters.domain.usecases.GetCharactersUseCase
-import com.example.characters.feature.characterList.CharactersViewModel
-import com.example.characters.service.CharacterService
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-
 
 
 val characterRepositoryModule = module {
@@ -26,6 +23,3 @@ val characterUseCasesModule = module {
     factory { GetCharactersUseCase(get()) }
 }
 
-val charactersViewModelModule = module {
-    viewModel { CharactersViewModel(get()) }
-}

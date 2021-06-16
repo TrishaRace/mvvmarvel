@@ -1,17 +1,7 @@
-package com.example.characters.feature.characterDetail
+package com.example.mvvmarvel.feature.character.characterDetail
 
-import android.view.View
-import androidx.lifecycle.MutableLiveData
 import com.example.characters.domain.usecases.GetCharactersUseCase
-import kotlinx.coroutines.flow.onStart
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.characters.models.data.Character
-import com.example.utilities.either.Either
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collect
 
 class CharacterDetailViewModel(
     private val getCharactersUseCase: GetCharactersUseCase

@@ -1,4 +1,4 @@
-package com.example.characters.service
+package com.example.characters.data.service
 
 import retrofit2.Retrofit
 

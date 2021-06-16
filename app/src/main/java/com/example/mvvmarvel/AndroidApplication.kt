@@ -3,6 +3,7 @@ package com.example.mvvmarvel
 import android.app.Application
 import com.example.characters.di.*
 import com.example.di.networkModule
+import com.example.mvvmarvel.core.di.charactersViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

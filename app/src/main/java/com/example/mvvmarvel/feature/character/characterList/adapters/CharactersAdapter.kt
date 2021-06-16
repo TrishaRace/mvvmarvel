@@ -1,4 +1,4 @@
-package com.example.characters.feature.characterList.adapters
+package com.example.mvvmarvel.feature.character.characterList.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +16,12 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharacterListVi
     internal var collection: List<CharacterView> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
-    internal var characterListener: (CharacterView, View) -> Unit =
-        { _: CharacterView, _: View -> }
+    internal var characterListener: (CharacterView) -> Unit = { }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        CharacterListViewHolder(LayoutInflater.from(parent.context).inflate( R.layout.item_view_character,parent,false))
+        CharacterListViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_view_character, parent, false)
+        )
 
 
     override fun getItemCount(): Int = collection.size
@@ -33,7 +34,7 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharacterListVi
 
         private val binding = ItemViewCharacterBinding.bind(itemView)
 
-        fun bind(item: CharacterView, characterListener: (CharacterView, View) -> Unit) {
+        fun bind(item: CharacterView, characterListener: (CharacterView) -> Unit) {
             binding.name.text = item.name
             with(binding.image) {
                 Glide.with(context.applicationContext)
@@ -41,7 +42,7 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharacterListVi
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(this)
             }
-            binding.cardViewItem.setOnClickListener { characterListener }
+            binding.cardViewItem.setOnClickListener { characterListener(item) }
 
         }
     }

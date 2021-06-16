@@ -1,4 +1,4 @@
-package com.example.characters.service
+package com.example.characters.data.service
 
 import com.example.characters.models.entity.CharacterEntity
 import com.example.characters.models.entity.CharactersEntity
