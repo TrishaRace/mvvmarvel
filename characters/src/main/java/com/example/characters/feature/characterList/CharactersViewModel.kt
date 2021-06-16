@@ -1,63 +1,64 @@
 package com.example.characters.feature.characterList
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.characters.models.view.CharacterView
 import com.example.characters.domain.usecases.GetCharactersUseCase
-import com.example.utilities.either.Either
-import com.example.utilities.either.onFailure
-import com.example.utilities.either.onSuccess
+import com.example.characters.models.view.CharacterView
+import com.example.characters.models.view.CharactersView
+import com.example.exception.Failure
+import com.example.platform.BaseViewModel
+import com.example.utilities.Error
+import com.example.utilities.Success
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable.cancel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class CharactersViewModel(
     private val getCharactersUseCase: GetCharactersUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
+    private var getForecastsJob: Job? = null
 
     private var _characters = MutableLiveData<List<CharacterView>>()
     val characters get() = _characters
-    var _failure: MutableLiveData<String> = MutableLiveData()
-    val failure get() = _failure
 
-    var _showLoading: MutableLiveData<Boolean> = MutableLiveData()
-    val showLoading get() = _showLoading
-
-    fun showError(failure: String?) {
-        this.failure.value = failure
-    }
-
-    fun showLoading(show: Boolean) {
-        this.showLoading.value = show
-    }
 
     private val offset = 0
     fun getCharacters(fromPagination: Boolean = false) {
-        viewModelScope.launch {
+        getForecastsJob.cancelIfActive()
+        getForecastsJob = viewModelScope.launch {
             getCharactersUseCase(GetCharactersUseCase.Input(calculateOffset(), fromPagination))
                 .onStart {
-                    showLoading(true) }
+                    handleShowSpinner(true)
+                }
                 .onCompletion {
-                    showLoading(false) }
-                .catch { a->
-                    showError(a.message) }
+                    handleShowSpinner(false)
+                }
+                .catch {
+                    handleFailure(Failure.Throwable(it))
+                }
                 .collect { result ->
-                   result
-                    result.onSuccess {
-                        _characters.value = it.results }
-                    result.onFailure {
-                        showError("Error en la llamada") }
+                    when (result) {
+                        is Success<CharactersView> -> {
+                            _characters.value = result.data.results
+                        }
+                        is Error -> {
+                            handleFailure(result.failure)
+                        }
+                    }
                 }
         }
     }
 
 
+        private fun calculateOffset() = offset + 10
 
-    private fun calculateOffset() = offset + 10
-
-
-}
+        fun Job?.cancelIfActive() {
+            if (this?.isActive == true) {
+                cancel()
+            }
+        }
+    }

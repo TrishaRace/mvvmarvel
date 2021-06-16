@@ -37,10 +37,11 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharacterListVi
             binding.name.text = item.name
             with(binding.image) {
                 Glide.with(context.applicationContext)
-                    .load(item.resourceURI)
+                    .load(item.image)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(this)
             }
+            binding.cardViewItem.setOnClickListener { characterListener }
 
         }
     }

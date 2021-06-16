@@ -26,6 +26,6 @@ val characterUseCasesModule = module {
     factory { GetCharactersUseCase(get()) }
 }
 
-val charactersViewModel = module {
+val charactersViewModelModule = module {
     viewModel { CharactersViewModel(get()) }
 }

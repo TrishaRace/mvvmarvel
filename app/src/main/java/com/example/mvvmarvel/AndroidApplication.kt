@@ -26,7 +26,7 @@ class AndroidApplication : Application() {
         characterDataSourceModule,
         characterRepositoryModule,
         characterServiceModule,
-        charactersViewModel,
+        charactersViewModelModule,
         networkModule
     )
 }

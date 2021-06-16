@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import com.example.characters.models.view.CharacterView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.characters.R
 import com.example.characters.databinding.FragmentCharactersBinding
 import com.example.characters.feature.characterList.adapters.CharactersAdapter
+import com.example.characters.models.view.CharacterView
+import com.example.exception.Failure
 import com.example.extensions.viewBinding
+import com.example.mvvmarvel.MainActivity
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class CharactersFragment : Fragment() {
 
@@ -29,16 +33,20 @@ class CharactersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(characterViewModel) {
             characters.observe(viewLifecycleOwner,::handleCharacters)
-            showLoading.observe(viewLifecycleOwner, ::showLoading)
+            showSpinner.observe(viewLifecycleOwner,::showLoading )
             failure.observe(viewLifecycleOwner,::showError)
         }
         initView()
         getData()
+        charactersAdapter.characterListener = {characterView, view ->
+
+            (activity as MainActivity).replaceFragment(FragmentB.newInstance(), "fragmentB")
+        }
     }
 
     private fun initView() {
         binding.characterList.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false )
             adapter = charactersAdapter
         }
     }
@@ -56,7 +64,7 @@ class CharactersFragment : Fragment() {
         }
     }
 
-    private fun showLoading() = {}//TODO
-    private fun showError() = {}//TODO
+    private fun showLoading(showLoading :Boolean) = {}//TODO
+    private fun showError(failure: Failure) = {}//TODO
 
 }
