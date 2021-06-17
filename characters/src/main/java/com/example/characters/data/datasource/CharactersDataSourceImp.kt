@@ -48,8 +48,11 @@ class CharactersDataSourceImp(
         return if (networkHandler.isConnected == true) {
             service.getCharacterDetail(id).run {
                 if (this.isSuccessful && this.body() != null) {
-                    val data = this.body()!!.data.results!![0]
-                    Success(data.toCharacter().toCharacterView())
+                    this.body()!!.data.results?.let {
+                        Success(it.first().toCharacter().toCharacterView())
+                    }?: kotlin.run {
+                        Error(Failure.CustomError(0, "Couldn't get the character"))
+                    }
                 } else {
                     Error(Failure.ServerError(code()))
                 }
@@ -59,4 +62,3 @@ class CharactersDataSourceImp(
         }
     }
 }
-
