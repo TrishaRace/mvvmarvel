@@ -5,6 +5,7 @@ import com.example.characters.data.datasource.CharactersDataSourceImp
 import com.example.characters.data.repository.CharactersRepositoryImp
 import com.example.characters.data.service.CharacterService
 import com.example.characters.domain.repository.CharactersRepository
+import com.example.characters.domain.usecases.GetCharacterDetailUseCase
 import com.example.characters.domain.usecases.GetCharactersUseCase
 import org.koin.dsl.module
 
@@ -19,7 +20,11 @@ val characterServiceModule = module {
     factory { CharacterService(get()) }
 }
 
-val characterUseCasesModule = module {
+val characterUseCaseModule = module {
     factory { GetCharactersUseCase(get()) }
+}
+
+val characterDetailUseCaseModule = module {
+    factory { GetCharacterDetailUseCase(get()) }
 }
 

@@ -1,40 +1,45 @@
 package com.example.mvvmarvel.feature.character.characterDetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.characters.models.view.CharacterView
+import androidx.navigation.fragment.navArgs
 import com.example.characters.R
+import com.example.characters.databinding.FragmentCharacterDetailBinding
+import com.example.characters.models.view.CharacterView
+import com.example.extensions.viewBinding
+import com.example.platform.BaseFragment
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class CharacterDetailFragment : Fragment() {
+class CharacterDetailFragment : BaseFragment(R.layout.fragment_character_detail) {
 
-    lateinit var character: CharacterView
+    private val binding by viewBinding<FragmentCharacterDetailBinding>()
+    private val arguments by navArgs<CharacterDetailFragmentArgs>()
+    private val characterDetailViewModel by viewModel<CharacterDetailViewModel>()
 
-    companion object {
-        fun newInstance(character: CharacterView): CharacterDetailFragment {
-            val fragment = CharacterDetailFragment()
-            val args = Bundle()
-            args.putParcelable("character", character)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View =
-        inflater.inflate(R.layout.fragment_character_detail, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val character by lazy(LazyThreadSafetyMode.NONE) { arguments.character }
 
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(characterDetailViewModel) {
+            characterDetail.observe(viewLifecycleOwner, ::handleCharacter)
+            showSpinner.observe(viewLifecycleOwner, ::showLoading)
+            failure.observe(viewLifecycleOwner, ::showError)
+        }
+        characterDetailViewModel.getCharacterDetail(character.id)
     }
 
-
+    private fun handleCharacter(characterDetail: CharacterView){
+        with(binding) {
+            with(image) {
+                com.bumptech.glide.Glide.with(context.applicationContext)
+                    .load(characterDetail.image)
+                    .transition(com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade())
+                    .into(this)
+            }
+            name.text = characterDetail.name
+            info1.text = characterDetail.description
+        }
+    }
 }
+

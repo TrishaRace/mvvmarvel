@@ -7,5 +7,6 @@ class CharactersRepositoryImp(
     private val charactersDataSource: CharactersDataSource
 ) : CharactersRepository {
     override fun getCharacters() = charactersDataSource.getCharacters()
+    override fun getCharacterDetail(id: String) = charactersDataSource.getCharacterDetail(id)
 
 }

@@ -15,6 +15,7 @@ import com.example.characters.models.view.CharacterView
 import com.example.exception.Failure
 import com.example.extensions.viewBinding
 import com.example.platform.BaseFragment
+import kotlinx.android.synthetic.main.navigation_activity.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -27,6 +28,7 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().toolbar.title = getString(com.example.mvvmarvel.R.string.welcome)
         with(characterViewModel) {
             characters.observe(viewLifecycleOwner, ::handleCharacters)
             showSpinner.observe(viewLifecycleOwner, ::showLoading)

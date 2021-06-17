@@ -6,6 +6,7 @@ import com.example.characters.domain.usecases.GetCharactersUseCase
 import com.example.characters.models.view.CharacterView
 import com.example.characters.models.view.CharactersView
 import com.example.exception.Failure
+import com.example.extensions.cancelIfActive
 import com.example.platform.BaseViewModel
 import com.example.utilities.Error
 import com.example.utilities.Success
@@ -25,8 +26,7 @@ class CharactersViewModel(
     private var _characters = MutableLiveData<List<CharacterView>>()
     val characters get() = _characters
 
-    private val offset = 0
-    fun getCharacters(fromPagination: Boolean = false) {
+    fun getCharacters() {
         getForecastsJob.cancelIfActive()
         getForecastsJob = viewModelScope.launch {
             getCharactersUseCase()
@@ -45,10 +45,4 @@ class CharactersViewModel(
                 }
         }
     }
-
-    fun Job?.cancelIfActive() {
-        if (this?.isActive == true) {
-            cancel()
-        }
-    } //meter extension en el core
 }

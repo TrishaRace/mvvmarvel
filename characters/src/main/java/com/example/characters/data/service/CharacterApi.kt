@@ -1,6 +1,5 @@
 package com.example.characters.data.service
 
-import com.example.characters.models.entity.CharacterEntity
 import com.example.characters.models.entity.CharactersEntity
 import com.example.platform.BaseResponse
 import retrofit2.Response
@@ -22,6 +21,6 @@ internal interface CharacterApi {
     ): Response<BaseResponse<CharactersEntity>>
 
     @GET(CHARACTER)
-    suspend fun getCharacter(@Path("characterId") id: String?): Response<CharacterEntity>
+    suspend fun getCharacterDetail(@Path("characterId") id: String?): Response<BaseResponse<CharactersEntity>>
 
 }

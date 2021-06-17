@@ -9,5 +9,5 @@ class CharacterService(retrofit: Retrofit) : CharacterApi {
     override suspend fun getCharacters(limit: Int?, offset: Int?) =
         characterApi.getCharacters(limit, offset)
 
-    override suspend fun getCharacter(id: String?) = characterApi.getCharacter(id)
+    override suspend fun getCharacterDetail(id: String?) = characterApi.getCharacterDetail(id)
 }
