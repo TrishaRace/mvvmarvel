@@ -1,10 +1,7 @@
 package com.example.characters.models.entity
 
-import androidx.room.Entity
 import com.example.characters.models.data.Character
-import com.example.characters.models.entity.CharacterThumbnailEntity
 
-@Entity
 data class CharacterEntity(
     val id: Int,
     val name: String?,
